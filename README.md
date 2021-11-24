@@ -17,7 +17,7 @@ On the local computer, I followed these instructions and executed these steps.
 # Misc notes
 
 ## Docker
-* Make sure to not use the `snap` install method, but *do* use `apt-get`. 
+* Make sure to not use the `snap` install method, but *do* use `apt-get` for docker. 
 * To avoid having to type `sudo` to run docker commands, on Ubuntu 20.04,
   - `sudo groupadd docker`
   - `sudo usermod -aG docker ${USER}`
@@ -25,18 +25,16 @@ On the local computer, I followed these instructions and executed these steps.
 
 # Development
 For compiling CUDA code, we need access to `nvcc`. c.f. https://github.com/NVIDIA/nvidia-docker/issues/1160
-We need the development docker images, e.g. 
-`docker run -it --rm --gpus all nvidia/cuda:11.4.0-cudnn8-devel-ubuntu20.04 /bin/bash`
-Once in the container,
-`nvcc hello_world.cu && ./a.out` will run the example. 
 
 # Docker only:
-`docker build -t local/d .`  
+`docker build -t local/d .` (-t is the image tag, one can use any name)
 `docker image ls` - will show the image (named `local/d`).   
-`docker run --gpus all local/d `, will run `nvidia-smi` then exit.   
+`docker run --gpus all local/d `, will run `hello_world.cu` then exit.   
 `docker run -it --rm --gpus all local/d /bin/bash` will run a bash shell of the local/d image.   
 
 # Docker-Compose and CUDA
 * For reference, see [here](https://docs.docker.com/compose/gpu-support/)
-
+* `docker-compose build`
+* `docker-compose up` will run the `hello_world.cu` code.
+* `docker-compose run --rm helloworld nvidia-smi --query-gpu=gpu_name --format=csv` will have the GPU configured for use. 
 
