@@ -1,0 +1,27 @@
+version: '3.4'
+
+
+services:
+  helloworld:
+    build:
+        context: .
+        dockerfile: Dockerfile
+    image: nvidia/cuda:11.4.0-cudnn8-devel-ubuntu20.04
+    command: /app/a.out
+    container_name: hw-container
+    environment:
+      - GOOGLE_APPLICATION_CREDENTIALS
+      
+    stdin_open: true
+    tty: true
+    volumes:
+      - .:/app
+    
+    deploy:
+      resources:
+        reservations:
+          devices:
+          - driver: nvidia
+            count: 1
+            capabilities: [gpu]
+
